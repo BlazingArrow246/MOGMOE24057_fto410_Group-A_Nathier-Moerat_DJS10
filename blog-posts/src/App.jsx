@@ -9,37 +9,42 @@ export default function App() {
 
   // Fetch blog posts when the component mounts
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    fetch("https://sonplaceholder.typicode.com/posts")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
+          throw new Error(`Error: ${response.statusText}`); // Throw error for unsuccessful response
         }
-        const data = await response.json();
-        console.log("Fetched Posts:", data);
+        return response.json(); // Parse JSON response
+      })
+      .then((data) => {
         setPosts(data); // Update state with fetched data
-      } catch (err) {
-        setError(err.message); // Update state with error message
-      }
-    };
-    fetchPosts(); // Call the fetchPosts function
+      })
+      .catch((err) => {
+        setError(err.message); // Save error message in state
+      });
   }, []); // Empty dependency array ensures this runs only once
   
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Blog Posts</h1>
+
+        {/* Blog Posts or Error Messages */}
+        {error ? (
+          <div className="error-message">Error: {error}</div>
+        ) : posts.length > 0 ? (
+          <div className="posts-container">
+            {posts.map((post) => (
+              <div key={post.id} className="blog-post">
+                <h2>{post.title}</h2>
+                <p>{post.body}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
       </header>
     </div>
   );
