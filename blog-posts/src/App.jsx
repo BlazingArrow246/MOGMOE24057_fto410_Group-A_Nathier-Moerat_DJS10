@@ -9,7 +9,7 @@ export default function App() {
 
   // Fetch blog posts when the component mounts
   useEffect(() => {
-    fetch("https://sonplaceholder.typicode.com/posts")
+    fetch("https://jsonplaceholder.typicode.com/posts")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`); // Throw error for unsuccessful response
@@ -37,8 +37,8 @@ export default function App() {
           <div className="posts-container">
             {posts.map((post) => (
               <div key={post.id} className="blog-post">
-                <h2>{post.title}</h2>
-                <p>{post.body}</p>
+                <h2>{post.title}</h2> {/* Blog Posts title */}
+                <p>{post.body}</p>   {/* Blog Posts body */}
               </div>
             ))}
           </div>
